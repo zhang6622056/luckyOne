@@ -1,7 +1,7 @@
 !(function(){
     'use strict';
 
-    var file_num = 43;
+    var file_num = 120;
     var photo_row = 6;
     var photo_col = 10;
     var photo_num = photo_row * photo_col;
@@ -79,8 +79,12 @@
         if (timer_small_slow){
             clearInterval(timer_small_slow);
         }
-        if ($(this).data('action') == 'start'){
+        if ($(this).data('action') == 'start'){ //- 开始抽奖
             $(this).data('action','stop').html('Stop');
+
+
+
+            //- 设置滚屏效果
             timer_big = setInterval(function(){
                 $('#gallery li.focus').removeClass('focus hover');
                 $('#gallery li:eq('+Math.ceil(Math.random()*photo_num)+')').addClass('focus');
@@ -88,9 +92,26 @@
             timer_small = setInterval(function(){
                 $('#gallery li:eq('+Math.ceil(Math.random()*photo_num)+') img').attr('src','photo/'+Math.ceil(Math.random()*file_num)+'.jpg');
             },1);
-        }else{
+        }else{          //- 结束抽奖
             $(this).data('action','start').html('Go');
             $('#gallery li.focus').addClass('hover');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             clearInterval(timer_big);
             clearInterval(timer_small);
         }
