@@ -84,11 +84,13 @@
 
 
 
-            //- 设置滚屏效果
+            //- 设置focus随机，也就是中奖，每100ms一次
             timer_big = setInterval(function(){
                 $('#gallery li.focus').removeClass('focus hover');
                 $('#gallery li:eq('+Math.ceil(Math.random()*photo_num)+')').addClass('focus');
             },100);
+
+            //- 切换src，每1s切换一次
             timer_small = setInterval(function(){
                 $('#gallery li:eq('+Math.ceil(Math.random()*photo_num)+') img').attr('src','photo/'+Math.ceil(Math.random()*file_num)+'.jpg');
             },1);
