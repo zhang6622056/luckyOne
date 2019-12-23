@@ -20,11 +20,9 @@ var member =  [ {
   "name": "姚文静",
   "photo": "7"
 }, {
-  
   "name": "马玉",
   "photo": "8"
 }, {
-  
   "name": "虞佳",
   "photo": "9"
 }, {

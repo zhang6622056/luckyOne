@@ -75,3 +75,26 @@ body {
     transform: scale(1.2);
     -webkit-transform: scale(1.2);
 }
+
+
+#awardCell{
+    width: 800px;
+    height: 450px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin:-225px 0 0 -400px;
+    display:none;
+}
+
+
+
+#awardCell #awardTitle{
+    color : #e3eae8;
+    text-align : center;
+    font-family: fantasy;
+}
+
+#awardCell #awardImg{
+    text-align : center;
+}
