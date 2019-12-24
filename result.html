@@ -5,8 +5,6 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0"/>
     <title>年会抽奖小程序</title>
-    <link rel="stylesheet" type="text/css" href="css/reset.css">
-    <link rel="stylesheet" type="text/css" href="css/wall.css">
     <style type="text/css">
         .wall {
             overflow: scroll;
@@ -36,41 +34,71 @@
             margin-bottom: 50px;
             font-family: '幼圆';
         }
-        .result-title {
-            text-align: center;
-            color: #4de7c8;
-            font-size: 40px;
-            margin-top: 100px;
-            font-family: '幼圆';
+        .result-list .result-title {
+            color: red;
+            font-size: 46px;
+            margin-top:100px;
         }
-
     </style>
 </head>
 <body>
 <div id="main" class="wall">
-    <div class="result-title">获奖名单</div>
-    <div class="result-list" v-for="result in results">
-        <div v-for="item in result">
-            {{item}}
-        </div>
+    <div class="result-list" id="reslist">
+        <div></div>
     </div>
 </div>
-<script type="text/javascript" src="js/vue.js"></script>
+<script src='js/jquery.js'></script>
 <script type="text/javascript">
     !(function(){
         'use strict';
+
+        var choosed = JSON.parse(localStorage.getItem('choosed')) || {};
+        console.log(choosed)
+
+
+
+        function appendName(name){
+            $('#reslist').append("<div><span>"+name+"</span></div>");
+        }
+
+
+        function makeSubTitle(award){
+            $('#reslist').append("<div class='result-title'><span>"+award+"</span></div>");
+        }
+
+
+
+
+
+
+
+        var currentawardText;
+        $.each(choosed,function(item){
+            var text = choosed[item];
+            if (currentawardText == text){
+                appendName(item.split("-")[0],text)
+            }else{
+                currentawardText = text;
+                // make title and append
+                makeSubTitle(currentawardText);
+                appendName(item.split("-")[0],text);
+            }
+        });
+
+
+
+
+
+
+
+
+
 
 
 
 
 
     })();
-
-
-
-
-
-
 </script>
 </body>
 </html>

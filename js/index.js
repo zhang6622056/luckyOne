@@ -17,7 +17,7 @@
     var lucker = [];
 
     //- 当前抽奖下标
-    //  localStorage.clear();
+    localStorage.clear();
     var awardIndex = localStorage.getItem("awardIndex");
     //- 当前抽奖的奖项对象
     var currentAward;
@@ -287,7 +287,7 @@
 
 
             
-            //awardIndex++;
+            awardIndex++;
         }
     });
 })();
