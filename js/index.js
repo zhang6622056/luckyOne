@@ -7,8 +7,23 @@
     var photo_num = photo_row * photo_col;
     var gallery = $('#gallery');
     var photos = [];
-    var fadeSpeed = 10;
+    var fadeSpeed = 2000;
+
+    //- 空格事件开关
     var clickSwitch = true;
+    //- 动画步骤 1- 奖项显示前 2- 奖项显示中
+    var animationStep = 1;
+
+    //- bgmArray
+    var bgmArr = ["audio/Fingerbang.mp3","audio/bgm.mp3"];
+
+
+
+    var player = $("#bgm")[0];
+    player.src = bgmArr.pop();         //每次读数组最后一个元素
+    player.addEventListener('ended', playEndedHandler, false);
+    player.loop = false;//禁止循环，否则无法触发ended事件
+
 
 
 
@@ -33,6 +48,13 @@
     var choosed = JSON.parse(localStorage.getItem('choosed')) || {};
 
 
+
+    function playEndedHandler(){
+        player.src = bgmArr.pop();
+        player.play();
+        console.log(arr.length);
+        !arr.length && myAudio.removeEventListener('ended',playEndedHandler,false);//只有一个元素时解除绑定
+    }
 
     //- 高奖池
     var makeSureArr = new Array();
@@ -59,18 +81,53 @@
 
         var awardTitle = currentAward.level+":"+currentAward.name+" X"+currentAward.quantity
         $('#awardTitle').html(awardTitle);
-        //TODO 设置奖项图片
+        $('#awardImage').attr('src',currentAward.image);
 
-        $('#gallery').fadeOut(fadeSpeed,function(){
-            $("#awardCell").fadeIn(fadeSpeed,function(){
-                $("#awardCell").fadeOut(fadeSpeed,function(){
-                    $('#gallery').fadeIn(fadeSpeed,function(){
-                        clickSwitch = true;
-                        startLoopPeople();
-                    });
-                })
+
+
+        if (animationStep == 1){
+            //- 开始bgm
+            player.play();
+            player.volume = 1.0;
+
+            $('#gallery').fadeOut(fadeSpeed,function(){
+                $("#awardCell").fadeIn(fadeSpeed,function(){
+                });
             });
-        });
+            animationStep = 2;
+            clickSwitch = true;
+            return;
+        }else if (animationStep == 2) {
+            $("#awardCell").fadeOut(fadeSpeed,function(){
+                $('#gallery').fadeIn(fadeSpeed,function(){
+
+                    //- 动画步骤控制
+                    animationStep = 1;
+
+                    //- 点击开关
+                    clickSwitch = true;
+
+                    //- 事件切换
+                    startOrStop = false;
+                    startLoopPeople();
+                });
+            })
+        }
+        
+
+        // $('#gallery').fadeOut(fadeSpeed,function(){
+        //     $("#awardCell").fadeIn(fadeSpeed,function(){
+        //         //- 当继续执行的时候，将该step 置成第一步
+        //         animationStep = 1;
+        //
+        //         $("#awardCell").fadeOut(fadeSpeed,function(){
+        //             $('#gallery').fadeIn(fadeSpeed,function(){
+        //                 clickSwitch = true;
+        //                 startLoopPeople();
+        //             });
+        //         })
+        //     });
+        // });
     }
 
 
@@ -192,11 +249,9 @@
                 return;
             }
             
-            
-            
+
             //- 显示奖项
             displayAwards();
-            startOrStop = false;
         }else{          //- 结束抽奖
             startOrStop = true;
 
@@ -288,6 +343,8 @@
 
             
             awardIndex++;
+
+            player.volume = 0.3;
         }
     });
 })();
