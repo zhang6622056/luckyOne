@@ -15,7 +15,7 @@
     var animationStep = 1;
 
     //- bgmArray
-    var bgmArr = ["audio/Fingerbang.mp3","audio/bgm.mp3"];
+    var bgmArr = ["audio/bgm.mp3","audio/dididiudiu.mp3","audio/Fingerbang.mp3"];
 
 
 
@@ -246,6 +246,7 @@
         if (startOrStop){ //- 开始抽奖
             if (awardIndex == awards.length){
                 alert('奖已抽完！');
+                player.stop();
                 return;
             }
             

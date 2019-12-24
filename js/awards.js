@@ -153,7 +153,7 @@ var awards = [
         level : '二等奖',
         name : 'iPad pro64G 11寸',
         quantity : '1',
-        image : 'photo/awards/iPad pro.png'
+        image : 'photo/awards/iPadpro.png'
     },
     {
         level : '二等奖',
@@ -166,6 +166,6 @@ var awards = [
         level : '一等奖',
         name : 'iPhone 11 pro 64G ',
         quantity : '1',
-        image : 'photo/awards/iPhone 11 pro.png'
+        image : 'photo/awards/iPhone11pro.png'
     }
 ]
