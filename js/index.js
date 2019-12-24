@@ -7,7 +7,7 @@
     var photo_num = photo_row * photo_col;
     var gallery = $('#gallery');
     var photos = [];
-    var fadeSpeed = 2000;
+    var fadeSpeed = 10;
     var clickSwitch = true;
 
 
@@ -17,6 +17,7 @@
     var lucker = [];
 
     //- 当前抽奖下标
+    //  localStorage.clear();
     var awardIndex = localStorage.getItem("awardIndex");
     //- 当前抽奖的奖项对象
     var currentAward;
@@ -28,15 +29,8 @@
     //- 开始按钮控制  true start, false stop
     var startOrStop = true;
 
-    //- 已中奖的人 TODO-REMOVE
-    localStorage.clear();
+    //- 已中奖的人
     var choosed = JSON.parse(localStorage.getItem('choosed')) || {};
-    console.log(choosed);
-    console.log(JSON.stringify(choosed));
-
-
-
-
 
 
 
@@ -50,8 +44,6 @@
 
 
 
-
-
     for (var i=1; i<=photo_num; i++){
         photos.push('photo/'+Math.ceil(Math.random()*file_num)+'.jpg');
     }
@@ -62,8 +54,6 @@
     //- 显示奖项，并开始抽奖
     function displayAwards(){
         clickSwitch = false;
-
-
 
         currentAward = awards[awardIndex];
 
@@ -105,7 +95,7 @@
     //- 判定index是否在nowLucker中，如果在则重新随机位置
     function indexNotIn(index,nowLucker){
         for (var i in nowLucker){
-            if (nowLucker[i] == index){
+            if (nowLucker[i] == index || Math.abs(nowLucker[i] - index) == 10 || Math.abs(nowLucker[i] - index) == 11 || Math.abs(nowLucker[i] - index) == 9 || Math.abs(nowLucker[i] - index) == 1){
                 return true;
             }
         }
@@ -184,6 +174,10 @@
 
     //- 设置抽奖开始结束事件
     $('#action').click(function(){
+        console.log(choosed);
+
+
+
         //- 点击开关。效果过渡的时候关闭响应
         if (!clickSwitch){ return; }
 
@@ -202,9 +196,7 @@
             
             //- 显示奖项
             displayAwards();
-
             startOrStop = false;
-
         }else{          //- 结束抽奖
             startOrStop = true;
 
@@ -233,7 +225,7 @@
                 })
                 .slice(0, currentAward.quantity)                //- 截取排名后前n位
                 .map(function(m){
-                    choosed[getKey(m)] = 1;         //- 扩展中奖人json
+                    choosed[getKey(m)] = currentAward.name;         //- 扩展中奖人json
                     return m.photo;
                 });
 
@@ -273,6 +265,8 @@
 
 
 
+
+
             //- TODO  从奖池中移除中奖人
 
 
@@ -293,7 +287,7 @@
 
 
             
-            awardIndex++;
+            //awardIndex++;
         }
     });
 })();
