@@ -1,13 +1,13 @@
 !(function(){
     'use strict';
 
-    var file_num = 133;
+    var file_num = 134;
     var photo_row = 6;
     var photo_col = 10;
-    var photo_num = photo_row * photo_col;
+    var photo_num = (photo_row * photo_col);
     var gallery = $('#gallery');
     var photos = [];
-    var fadeSpeed = 2000;
+    var fadeSpeed = 10;
 
     //- 空格事件开关
     var clickSwitch = true;
@@ -32,7 +32,6 @@
     var lucker = [];
 
     //- 当前抽奖下标
-    localStorage.clear();
     var awardIndex = localStorage.getItem("awardIndex");
     //- 当前抽奖的奖项对象
     var currentAward;
@@ -144,8 +143,10 @@
 
         //- 切换src，每1s切换一次
         timer_small = setInterval(function(){
-            $('#gallery li:eq('+Math.ceil(Math.random()*photo_num)+') img').attr('src','photo/'+Math.ceil(Math.random()*file_num)+'.jpg');
-        },1);
+            var loopIndex = Math.ceil(Math.random()*file_num);
+            $('#gallery li:eq('+Math.ceil(Math.random()*photo_num)+') img').attr('src','photo/'+loopIndex+'.jpg');
+            console.log("looping"+loopIndex)
+        },1000);
     }
 
 
@@ -287,14 +288,18 @@
 
 
 
-            if (ret.length == 0){
-                alert('奖池中人员已全部抽完!');
-            }
-            //- ret 中奖人图片名以逗号分割
+            if (ret.length == 0){  alert('奖池中人员已全部抽完!'); }
+
+
+
             console.log(ret);
             localStorage.setItem('choosed', JSON.stringify(choosed));
 
 
+
+            //- 首先清理抽奖人的效果，否则中奖人会被覆盖
+            clearInterval(timer_big);
+            clearInterval(timer_small);
 
 
 
@@ -305,46 +310,26 @@
                 //- 随机中奖位置
                 var index;
                 do {
-                    index = Math.ceil(Math.random()*file_num);
+                    index = Math.ceil(Math.random()*photo_num);
+                    if (index == 60){
+                        index = 60-1;
+                    }
+
+
                 }while(indexNotIn(index,nowLucker))
                 nowLucker.push(index);
 
-                $('#gallery li:eq('+index+')')
+
+                console.log(index,ret[i]);
+
+                var liObj = $('#gallery li:eq('+index+')')
                     .addClass('focus')
-                    .addClass('hover')
-                    .find('img')
-                    .attr('src','photo/'+ret[i]+'.jpg')
+                    .addClass('hover');
+                $(liObj).find('img').attr('src','photo/'+ret[i]+'.jpg')
             }
 
 
-
-
-
-
-
-
-            //- TODO  从奖池中移除中奖人
-
-
-
-
-
-
-            //- 保存中奖人至localStorage
-            // var luckerInMemberIndex = index - 1;
-            // var luckerObj = member[luckerInMemberIndex];
-            // console.log(luckerObj)
-            // localStorage.setItem(new Date().toDateString(),luckerObj);
-
-
-            //- 清理抽奖时的效果
-            clearInterval(timer_big);
-            clearInterval(timer_small);
-
-
-            
             awardIndex++;
-
             player.volume = 0.3;
         }
     });
