@@ -136,99 +136,75 @@ var member =  [ {
   "name": "陈子阳",
   "photo": "36"
 }, {
-
   "name": "汪雪梅",
   "photo": "37"
 }, {
-
   "name": "郭震宇",
   "photo": "38"
 }, {
-
   "name": "杨寒",
   "photo": "39"
 }, {
-
   "name": "田红娟",
   "photo": "40"
 }, {
-
   "name": "汪妙",
   "photo": "41"
 }, {
-
   "name": "金天羽",
   "photo": "42"
 }, {
-
   "name": "叶茜",
   "photo": "43"
 }, {
-
   "name": "张笑",
   "photo": "44"
 }, {
-
   "name": "冯宇飞",
   "photo": "45"
 }, {
-
   "name": "郑雅",
   "photo": "46"
 }, {
-
   "name": "李帅",
   "photo": "47"
 }, {
-
   "name": "王倩",
   "photo": "48"
 }, {
-
   "name": "谢卓颖",
   "photo": "49"
 }, {
-
   "name": "李慧霞",
   "photo": "50"
 }, {
-
   "name": "黄显微",
   "photo": "51"
 }, {
-
   "name": "张宏浩",
   "photo": "52"
 }, {
-
   "name": "盛彤",
   "photo": "53"
 }, {
-
   "name": "朱唯溪",
   "photo": "54"
 }, {
-
   "name": "许瑶",
   "photo": "55"
 }, {
-
   "name": "黄俊英",
   "photo": "56"
 }, {
-
   "name": "周乔宇",
   "photo": "57"
 }, {
-
   "name": "李亚群",
   "photo": "58"
 }, {
-
   "name": "陈凯",
   "photo": "59"
 }, {
-
   "name": "王北正",
   "photo": "60"
 }, {

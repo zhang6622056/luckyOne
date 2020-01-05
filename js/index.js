@@ -9,20 +9,18 @@
     var photos = [];
     var fadeSpeed = 10;
 
+
+
     //- 空格事件开关
     var clickSwitch = true;
     //- 动画步骤 1- 奖项显示前 2- 奖项显示中
     var animationStep = 1;
 
-    //- bgmArray
-    var bgmArr = ["audio/bgm.mp3","audio/dididiudiu.mp3","audio/Fingerbang.mp3"];
 
 
 
-    var player = $("#bgm")[0];
-    player.src = bgmArr.pop();         //每次读数组最后一个元素
-    player.addEventListener('ended', playEndedHandler, false);
-    player.loop = false;//禁止循环，否则无法触发ended事件
+
+
 
 
 
@@ -32,6 +30,7 @@
     var lucker = [];
 
     //- 当前抽奖下标
+    localStorage.clear();
     var awardIndex = localStorage.getItem("awardIndex");
     //- 当前抽奖的奖项对象
     var currentAward;
@@ -48,12 +47,15 @@
 
 
 
-    function playEndedHandler(){
-        player.src = bgmArr.pop();
-        player.play();
-        console.log(arr.length);
-        !arr.length && myAudio.removeEventListener('ended',playEndedHandler,false);//只有一个元素时解除绑定
+
+    //- 获取随机位置
+    function getRandomImagePosition(){
+        return Math.ceil(Math.random()*photo_num)-1;
     }
+
+
+
+
 
     //- 高奖池
     var makeSureArr = new Array();
@@ -63,10 +65,8 @@
         }
     }
 
-
-
     for (var i=1; i<=photo_num; i++){
-        photos.push('photo/'+Math.ceil(Math.random()*file_num)+'.jpg');
+        photos.push(Math.ceil(Math.random()*file_num));
     }
 
     var loadedIndex = 1;
@@ -88,6 +88,11 @@
             //- 开始bgm
             player.play();
             player.volume = 1.0;
+
+
+
+
+
 
             $('#gallery').fadeOut(fadeSpeed,function(){
                 $("#awardCell").fadeIn(fadeSpeed,function(){
@@ -112,21 +117,6 @@
                 });
             })
         }
-        
-
-        // $('#gallery').fadeOut(fadeSpeed,function(){
-        //     $("#awardCell").fadeIn(fadeSpeed,function(){
-        //         //- 当继续执行的时候，将该step 置成第一步
-        //         animationStep = 1;
-        //
-        //         $("#awardCell").fadeOut(fadeSpeed,function(){
-        //             $('#gallery').fadeIn(fadeSpeed,function(){
-        //                 clickSwitch = true;
-        //                 startLoopPeople();
-        //             });
-        //         })
-        //     });
-        // });
     }
 
 
@@ -141,12 +131,15 @@
             //- undo
         },100);
 
-        //- 切换src，每1s切换一次
+        //- 切换src，每1ms切换一次
         timer_small = setInterval(function(){
             var loopIndex = Math.ceil(Math.random()*file_num);
-            $('#gallery li:eq('+Math.ceil(Math.random()*photo_num)+') img').attr('src','photo/'+loopIndex+'.jpg');
-            console.log("looping"+loopIndex)
-        },1000);
+
+            //- 替换新图片
+            var imgObj = $('#gallery li:eq('+getRandomImagePosition()+') img');
+            var alt = $(imgObj).attr('alt');
+            $(imgObj).attr('src','photo/'+loopIndex+'.jpg').attr('alt',loopIndex);
+        },1);
     }
 
 
@@ -185,7 +178,7 @@
 
 
 
-
+    //- 初始化html内容
     $.each(photos, function(index, photo){
         var img = document.createElement('img');
         var link = document.createElement('a');
@@ -204,19 +197,27 @@
             }, 10*loadedIndex++);
         };
 
-        img.src = photo;
+        img.src = 'photo/'+photo+'.jpg';
+        $(img).attr('alt',photo).addClass('pics'+photo);
     });
+
+
+
+
 
     var timer_big, timer_small;
     var timer_small_slow = setInterval(function(){
         $('#gallery li:eq('+Math.ceil(Math.random()*photo_num)+')')
             .addClass('animated bounce')
             .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                $(this)
+                //- 获取当前的被替换的图片对象
+                var imgObj = $(this)
                     .removeClass('animated bounce')
-                    .find('img')
-                    .attr('src','photo/'+Math.ceil(Math.random()*file_num)+'.jpg')
+                    .find('img');
 
+                //- 生成随机员工照片
+                var imgstr = Math.ceil(Math.random()*file_num);
+                $(imgObj).attr('src','photo/'+imgstr+'.jpg').attr('alt',imgstr).addClass('pics'+imgstr);
             });
     },100);
 
@@ -232,22 +233,16 @@
 
     //- 设置抽奖开始结束事件
     $('#action').click(function(){
-        console.log(choosed);
-
-
-
         //- 点击开关。效果过渡的时候关闭响应
         if (!clickSwitch){ return; }
 
+        if (timer_small_slow){ clearInterval(timer_small_slow); }
 
 
-        if (timer_small_slow){
-            clearInterval(timer_small_slow);
-        }
         if (startOrStop){ //- 开始抽奖
             if (awardIndex == awards.length){
                 alert('奖已抽完！');
-                player.stop();
+                player.pause();
                 return;
             }
             
@@ -290,9 +285,7 @@
 
             if (ret.length == 0){  alert('奖池中人员已全部抽完!'); }
 
-
-
-            console.log(ret);
+            //- 保存中奖人结果
             localStorage.setItem('choosed', JSON.stringify(choosed));
 
 
@@ -303,36 +296,197 @@
 
 
 
-            //- 展示中奖效果
-            var nowLucker = new Array();
-            for (var i in ret){
+            //- 将中奖展示后置100ms，防止时间冲突，篡改。
+            setTimeout(function(){
 
-                //- 随机中奖位置
-                var index;
-                do {
-                    index = Math.ceil(Math.random()*photo_num);
-                    if (index == 60){
-                        index = 60-1;
-                    }
+                var excludeArr = new Array();
 
+                //- 首先去重屏幕上重复的照片
+                removeRepeat(excludeArr);
 
-                }while(indexNotIn(index,nowLucker))
-                nowLucker.push(index);
+                //- 然后去重与中奖结果重复的照片
+                removeRepeatWithLucker(ret,excludeArr);
 
+                //- 展示中奖效果
+                var nowLuckerPosition = new Array();
 
-                console.log(index,ret[i]);
+                for (var i in ret){
 
-                var liObj = $('#gallery li:eq('+index+')')
-                    .addClass('focus')
-                    .addClass('hover');
-                $(liObj).find('img').attr('src','photo/'+ret[i]+'.jpg')
-            }
+                    //- 随机中奖位置
+                    var index;
+                    do {
+                        index = Math.ceil(Math.random()*photo_num);
+                        if (index == 60){ index = 60-1; }
 
 
-            awardIndex++;
-            player.volume = 0.3;
+                    }while(indexNotIn(index,nowLuckerPosition))
+                    nowLuckerPosition.push(index);
+
+                    //- 中奖人照片id
+                    var luckerId = ret[i];
+
+                    //- 变更位置样式
+                    var liObj = $('#gallery li:eq('+index+')')
+                        .addClass('focus')
+                        .addClass('hover');
+                    var imgObj = $(liObj).find('img');
+
+                    $(imgObj).attr('src','photo/'+luckerId+'.jpg').attr('alt',luckerId);
+                }
+
+                awardIndex++;
+                player.volume = 0.3;
+            },100)
         }
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //- 抽奖之前去重
+    function removeRepeat(excludeArr){
+        //- 获取所有的li下的img元素
+        var imgsFromHtml = $('li img');
+
+
+        $(imgsFromHtml).each(function(){
+            var alt = $(this).attr('alt');
+
+            //- 挨个去重
+            replaceRepeatElement(alt,excludeArr,1);
+            excludeArr.push(alt);
+        });
+    }
+
+
+
+
+
+    /**
+     *
+     * 功能描述
+     * @author Nero
+     * @date 2020-01-05
+     * alt 本次要唯一的量
+     * excludeArr 本次随机要排除的数组
+     * threasholdValue 至少有几个
+     * @return
+     */
+    function replaceRepeatElement(alt,excludeArr,threasholdValue){
+        var elementTotal = new Array();
+        var imgsFromHtml = $('li img');
+
+
+        $(imgsFromHtml).each(function(){
+            if (alt == $(this).attr('alt')){
+                elementTotal.push(this);
+            }
+        })
+
+
+
+        //- 有重复记录,替换为新的。
+        if (elementTotal.length > threasholdValue){
+            $(elementTotal).each(function(){
+                var index;
+                do{
+                    index = Math.ceil(Math.random()*file_num);
+                }while(isInRepeat(index,excludeArr));
+
+                $(this).attr('src','photo/'+index+'.jpg').attr('alt',index);
+            });
+        }
+    }
+
+
+
+
+
+    /**
+     *
+     * true 表示是重复的下标，false表示不重复
+     * @author Nero
+     * @date 2020-01-05
+     *
+     * @return
+     */
+    function isInRepeat(photoIndex,excludeArr){
+        var imgsFromHtml = $('li img');
+
+        $(imgsFromHtml).each(function(){
+            if (photoIndex == $(this).attr('alt')){
+                return true;
+            }
+        })
+
+
+        if (undefined != excludeArr){
+            for (var i in excludeArr){
+                if (photoIndex == excludeArr[i]){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+
+
+//- 去重与中奖结果重复的照片
+    function removeRepeatWithLucker(luckers,excludeArr){
+
+        for (var i in luckers){
+            excludeArr.push(luckers[i]);
+        }
+
+        $.each(luckers,function(index,item){
+            replaceRepeatElement(item,excludeArr,0);
+        })
+    }
+
+
+
 })();
 
 
