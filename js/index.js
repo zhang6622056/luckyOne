@@ -22,6 +22,9 @@
 
 
 
+    //TODO-ZL remove
+    localStorage.clear();
+
 
     //- 中奖人数组
     var lucker = [];
