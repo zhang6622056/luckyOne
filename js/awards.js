@@ -103,12 +103,6 @@ var awards = [
     },
     {
         level : '四等奖',
-        name : 'Switch',
-        quantity : '1',
-        image : 'photo/awards/Switch.png'
-    },
-    {
-        level : '四等奖',
         name : '哈曼卡蓝牙智能音箱',
         quantity : '1',
         image : 'photo/awards/hamankalanyayinxiang.png'
@@ -127,8 +121,14 @@ var awards = [
     },
     {
         level : '三等奖',
+        name : 'Switch',
+        quantity : '1',
+        image : 'photo/awards/Switch.png'
+    },
+    {
+        level : '三等奖',
         name : 'Air Pods Pro',
-        quantity : '3',
+        quantity : '2',
         image : 'photo/awards/Air Pods Pro.png'
     },
     {
