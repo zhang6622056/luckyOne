@@ -17,11 +17,8 @@
     var animationStep = 1;
 
 
-
-
-
-
-
+    //- 排除一部分人
+    var lowIndexArray = [3,4,13,21,80,91,93,99,113,131,132,133,134];
 
 
 
@@ -30,14 +27,12 @@
     var lucker = [];
 
     //- 当前抽奖下标
-    localStorage.clear();
     var awardIndex = localStorage.getItem("awardIndex");
     //- 当前抽奖的奖项对象
     var currentAward;
 
 
     if (undefined == awardIndex){  awardIndex = 0; }
-
 
     //- 开始按钮控制  true start, false stop
     var startOrStop = true;
@@ -47,23 +42,23 @@
 
 
 
-
     //- 获取随机位置
     function getRandomImagePosition(){
         return Math.ceil(Math.random()*photo_num)-1;
     }
 
 
-
-
-
     //- 高奖池
     var makeSureArr = new Array();
     for (var i = 0 ; i < member.length; i++){
-        if(i < 43){
+        if(i < 65){
             makeSureArr.push(member[i]);
         }
     }
+
+
+
+
 
     for (var i=1; i<=photo_num; i++){
         photos.push(Math.ceil(Math.random()*file_num));
@@ -88,8 +83,6 @@
             //- 开始bgm
             player.play();
             player.volume = 1.0;
-
-
 
 
 
@@ -257,16 +250,26 @@
             var ret = member
                 .filter(function(m, index){ //- 过滤已中奖的人
                     m.index = index;
-                    return !choosed[getKey(m)];
+                    var readyChoose = !choosed[getKey(m)]
+                    return readyChoose;
                 })
                 .map(function(m){
                     var scoperandom = 0;
-                    // if (currentAward.quantity < 5){
-                    if (true){
-                        if (searchIndex(m)){
+                    if (currentAward.level == '三等奖'
+                            || currentAward.level == '二等奖'
+                            || currentAward.level == '一等奖'
+                            || currentAward.level == '特等奖') {
+                        if (searchIndex(m)) {
                             scoperandom = 1;
                         }
                     }
+
+                    //- low array
+                    if (lowIndexArray.indexOf(parseInt(m.photo)) != -1){
+                        console.log(m.name);
+                        scoperandom = -2;
+                    }
+
 
                     return Object.assign({
                         score: Math.random()-scoperandom
@@ -280,8 +283,6 @@
                     choosed[getKey(m)] = currentAward.name;         //- 扩展中奖人json
                     return m.photo;
                 });
-
-
 
             if (ret.length == 0){  alert('奖池中人员已全部抽完!'); }
 
@@ -336,6 +337,9 @@
 
                 awardIndex++;
                 player.volume = 0.3;
+
+                //- 设置当前抽奖下标，当抽奖完成
+                localStorage.setItem("awardIndex",awardIndex);
             },100)
         }
     });
@@ -475,7 +479,6 @@
 
 //- 去重与中奖结果重复的照片
     function removeRepeatWithLucker(luckers,excludeArr){
-
         for (var i in luckers){
             excludeArr.push(luckers[i]);
         }
@@ -484,9 +487,6 @@
             replaceRepeatElement(item,excludeArr,0);
         })
     }
-
-
-
 })();
 
 

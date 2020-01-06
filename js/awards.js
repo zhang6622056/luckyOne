@@ -122,7 +122,7 @@ var awards = [
     {
         level : '三等奖',
         name : 'Switch',
-        quantity : '1',
+        quantity : '2',
         image : 'photo/awards/Switch.jpg'
     },
     {
