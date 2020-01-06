@@ -167,5 +167,12 @@ var awards = [
         name : 'iPhone 11 pro 64G ',
         quantity : '1',
         image : 'photo/awards/iPhone11pro.png'
+    },
+    {
+
+        level : '特等奖',
+        name : '旅游基金1万元',
+        quantity : '1',
+        image : 'photo/awards/luyoujijin.jpg'
     }
 ]
