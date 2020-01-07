@@ -92,7 +92,8 @@ body {
 #awardCell #awardTitle{
     color : #e3eae8;
     text-align : center;
-    font-family: fantasy;
+    font-family: cursive;
+    font-size: 40px;
 }
 
 #awardCell #awardImg{
