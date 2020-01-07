@@ -223,6 +223,9 @@
         if(event.which == 13 || event.which == 32) {
             $('#action').click();
         }
+        if(event.which == 27) {
+            localStorage.clear();
+        }
     });
 
 
