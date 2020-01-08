@@ -53,8 +53,8 @@
     !(function(){
         'use strict';
 
-        var choosed = JSON.parse(localStorage.getItem('choosed')) || {};
-        console.log(choosed)
+
+        var totalLen = 0;
 
 
 
@@ -72,27 +72,56 @@
 
 
 
+        function refreshPage(){
+            var choosed = JSON.parse(localStorage.getItem('choosed')) || {};
 
-        var currentawardText;
-        $.each(choosed,function(item){
-            var text = choosed[item];
-            if (currentawardText == text){
-                appendName(item.split("-")[0],text)
-            }else{
-                currentawardText = text;
-                // make title and append
-                makeSubTitle(currentawardText);
-                appendName(item.split("-")[0],text);
+            var reverseJsonArr = new Array();
+            $.each(choosed,function(item){
+                var itemjson = {};
+                itemjson[item] = choosed[item];
+                reverseJsonArr.push(itemjson)
+            });
+
+
+            reverseJsonArr = reverseJsonArr.reverse();
+            var curlen = reverseJsonArr.length;
+
+
+            if (totalLen != curlen){
+                $('#reslist').html('');
+
+                for (var i in reverseJsonArr) {
+
+                    var curObj = reverseJsonArr[i];
+
+                    var item;   //-名字+编号
+                    var text;   //-奖项
+                    for (var key in curObj) {
+                        item = key;
+                        text = curObj[key];
+                    }
+
+
+                    var currentawardText;
+                    if (currentawardText == text){
+                        appendName(item.split("-")[0],text)
+                    }else{
+                        currentawardText = text;
+                        // make title and append
+                        makeSubTitle(currentawardText);
+                        appendName(item.split("-")[0],text);
+                    }
+                }
             }
-        });
+            totalLen = curlen;
+        }
 
 
 
 
-
-
-
-
+        setInterval(function(){
+            refreshPage();
+        },1000);
 
 
 

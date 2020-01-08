@@ -220,11 +220,13 @@
 
     //- 设置空格事件
     $(document).keypress(function(event){
-        if(event.which == 13 || event.which == 32) {
+        if(event.which == 32) { //-空格
             $('#action').click();
         }
-        if(event.which == 27) {
-            localStorage.clear();
+        if(event.which == 13) { //-enter
+            if (confirm("你确定要重置吗，这样会丢失所有的抽奖结果")){
+                localStorage.clear();
+            }
         }
     });
 
@@ -272,7 +274,6 @@
 
                     //- low array
                     if (lowIndexArray.indexOf(parseInt(m.photo)) != -1){
-                        console.log(m.name);
                         scoperandom = -2;
                     }
 
