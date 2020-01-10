@@ -1,13 +1,13 @@
 var awards = [
     {
         level : '慰问奖',
-        name : '回家车票',
+        name : '回家车票 800元',
         quantity : '8',
         image : 'photo/awards/huijiachepiao.jpg'
     },
     {
         level : '六等奖',
-        name : '体检专项筛查',
+        name : '体检专项筛查基金 600元',
         quantity : '1',
         image : 'photo/awards/zhuanxiangtijianjijin.jpg'
     },
@@ -19,19 +19,19 @@ var awards = [
     },
     {
         level : '六等奖',
-        name : '温暖基金（羽绒服、电热毯等）',
+        name : '温暖基金 600元',
         quantity : '1',
         image : 'photo/awards/wennuanjijin.jpg'
     },
     {
         level : '六等奖',
-        name : '美丽基金',
+        name : '美丽基金 600元',
         quantity : '1',
         image : 'photo/awards/meilijijn.jpg'
     },
     {
         level : '六等奖',
-        name : '零食基金',
+        name : '美食基金 600元',
         quantity : '1',
         image : 'photo/awards/meishijijn.jpg'
     },
@@ -55,37 +55,37 @@ var awards = [
     },
     {
         level : '六等奖',
-        name : '小黄人键盘',
+        name : 'lofree键盘',
         quantity : '2',
         image : 'photo/awards/LOFREE.jpg'
     },
     {
         level : '五等奖',
-        name : '健身基金',
+        name : '健身基金 1000元',
         quantity : '2',
         image : 'photo/awards/jianshenjijin.jpeg'
     },
     {
         level : '五等奖',
-        name : '迪士尼门票基金',
+        name : '迪士尼欢乐基金 1000元',
         quantity : '2',
         image : 'photo/awards/dishinimenpiaojijin.jpg'
     },
     {
         level : '五等奖',
-        name : '全网视频会员1年（B站、优酷、腾讯、爱奇艺、百度网盘）',
+        name : '全网视频会员基金 1000元',
         quantity : '1',
         image : 'photo/awards/quanwanghuiyuanjinjin.jpg'
     },
     {
         level : '五等奖',
-        name : '乐高（哈利波特系列）',
+        name : '乐高',
         quantity : '2',
         image : 'photo/awards/LEGO.jpg'
     },
     {
         level : '五等奖',
-        name : '按摩基金',
+        name : '按摩基金 1000元',
         quantity : '1',
         image : 'photo/awards/anmojijin.jpg'
     },
@@ -97,7 +97,7 @@ var awards = [
     },
     {
         level : '四等奖',
-        name : '2000元滴滴打车充值',
+        name : '出行基金 2000元',
         quantity : '1',
         image : 'photo/awards/dididachejijin.jpeg'
     },
@@ -145,13 +145,13 @@ var awards = [
     },
     {
         level : '三等奖',
-        name : '家庭投影',
+        name : '小米投影仪',
         quantity : '1',
         image : 'photo/awards/xiaomitouyingyi.jpg'
     },
     {
         level : '二等奖',
-        name : 'iPad pro64G 11寸',
+        name : 'iPad pro',
         quantity : '1',
         image : 'photo/awards/iPad Pro.jpg'
     },
@@ -164,14 +164,14 @@ var awards = [
     {
 
         level : '一等奖',
-        name : 'iPhone 11 pro 64G ',
+        name : 'iPhone 11 pro',
         quantity : '1',
         image : 'photo/awards/iPhone11Pro.jpg'
     },
     {
 
         level : '特等奖',
-        name : '旅游基金1万元',
+        name : '旅游基金 10000元',
         quantity : '1',
         image : 'photo/awards/luyoujijin.jpg'
     }
