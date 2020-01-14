@@ -1,7 +1,7 @@
 !(function(){
     'use strict';
 
-    var file_num = 134;
+    var file_num = 132;
     var photo_row = 6;
     var photo_col = 10;
     var photo_num = (photo_row * photo_col);
@@ -18,12 +18,7 @@
 
 
     //- 排除一部分人
-    var lowIndexArray = [3,4,13,21,80,91,93,99,113,131,132,133,134];
-
-
-
-    //TODO-ZL remove
-    localStorage.clear();
+    var lowIndexArray = [3,4,13,21,37,61,64,79,80,91,93,99,113,131,132,133,134];
 
 
     //- 中奖人数组
