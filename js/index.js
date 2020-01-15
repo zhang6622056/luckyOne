@@ -1,13 +1,13 @@
 !(function(){
     'use strict';
 
-    var file_num = 132;
+    var file_num = 134;
     var photo_row = 6;
     var photo_col = 10;
     var photo_num = (photo_row * photo_col);
     var gallery = $('#gallery');
     var photos = [];
-    var fadeSpeed = 10;
+    var fadeSpeed = 1000;
 
 
 
@@ -19,6 +19,11 @@
 
     //- 排除一部分人
     var lowIndexArray = [3,4,13,21,37,61,64,79,80,91,93,99,113,131,132,133,134];
+
+    var displayExcludeJson = {"129" : "y","113" : "y"};
+
+
+
 
 
     //- 中奖人数组
@@ -57,9 +62,25 @@
 
 
 
+    //- 显示人的过滤算法。在排除json内的人不显示
+    function getRandomDisplayIndex(){
+        var res;
+        do {
+            res = Math.ceil(Math.random()*file_num);
+            if (displayExcludeJson[res]){console.log(res)}
+        }while(undefined != displayExcludeJson[res])
+        return res;
+    }
+
+
+
+
+
+
+
 
     for (var i=1; i<=photo_num; i++){
-        photos.push(Math.ceil(Math.random()*file_num));
+        photos.push(getRandomDisplayIndex());
     }
 
     var loadedIndex = 1;
@@ -124,7 +145,7 @@
 
         //- 切换src，每1ms切换一次
         timer_small = setInterval(function(){
-            var loopIndex = Math.ceil(Math.random()*file_num);
+            var loopIndex = getRandomDisplayIndex();
 
             //- 替换新图片
             var imgObj = $('#gallery li:eq('+getRandomImagePosition()+') img');
@@ -207,7 +228,7 @@
                     .find('img');
 
                 //- 生成随机员工照片
-                var imgstr = Math.ceil(Math.random()*file_num);
+                var imgstr = getRandomDisplayIndex();
                 $(imgObj).attr('src','photo/'+imgstr+'.jpg').attr('alt',imgstr).addClass('pics'+imgstr);
             });
     },100);
@@ -435,7 +456,7 @@
             $(elementTotal).each(function(){
                 var index;
                 do{
-                    index = Math.ceil(Math.random()*file_num);
+                    index = getRandomDisplayIndex();
                 }while(isInRepeat(index,excludeArr));
 
                 $(this).attr('src','photo/'+index+'.jpg').attr('alt',index);
